@@ -1,9 +1,19 @@
 import { Link } from "react-router";
 import cartIcon from '../assets/images/iconCart.png'
+import { useSelector, useDispatch } from "react-redux";
+import { addToCart } from '../stores/cart';
 
 const ProductCart = (props) => {
-    console.log(props);
+    const carts = useSelector(store => store.cart.items);
+    console.log(carts);
     const { id, name, price, image, slug } = props.data;
+    const dispatch = useDispatch();
+    const handleAddToCart = () => {
+        dispatch(addToCart({
+            productId: id,
+            quantity: 1,
+        }));
+    }
     return <div className="bg-white p-5 rounded-xl shadow-sm">
         <Link to={slug}>
             <img src={image} alt='' className='w-full h-80 object-cover object-top drop-shadow-[0_80px_30px_#0007]' />
@@ -13,7 +23,7 @@ const ProductCart = (props) => {
             <p>
                 $<span className='text-2xl font-medium'>{price}</span>
             </p>
-            <button className='bg-gray-300 p-2 rounded-md text-sm hover:bg-gray-400 flex gap-2'>
+            <button className='bg-gray-300 p-2 rounded-md text-sm hover:bg-gray-400 flex gap-2' onClick={handleAddToCart}>
                 <img src={cartIcon} alt="" className='w-5' />
                 Add to Cart
             </button>
